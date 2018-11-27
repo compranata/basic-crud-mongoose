@@ -68,26 +68,65 @@ exports.update = function (req, res) {
 
 // router.delete('/posts/:id', post.update);
 exports.destroy = function (req, res) {
+
   Posts.remove({_id: req.body._id}, function(err) {
     if (err) throw err;
-});
+  });
   res.redirect('/posts');
 };
 
 // router.get('/posts/search', post.search);
 exports.search = function (req, res) {
+  const MAX_ITEMS_PER_PAGE = 3;
+  const query = req.query.q;
+  const page = req.query.pg ? parseInt(req.query.pg) : 1;
+
   // if keyword is empty, redirect to index
-  if (!req.query.keywords) {
+  if (!req.query.q) {
     res.redirect('/posts');
   }
   // Search box if multiple words spared with space, create regexp with |
-  let keys = (req.query.keywords).split(/\s/).join('|');
+  let keys = (req.query.q).split(/\s/).join('|');
   // find() in subject or in body
-  Posts.find(
-    {$or: [{subject: new RegExp(`.*${keys}.*`, 'i')},
-      {body: new RegExp(`.*${keys}.*`, 'i')}]},
-    function(err, results) {
+  const filter = {$or: [{subject: new RegExp(`.*${keys}.*`, 'i')},
+      {body: new RegExp(`.*${keys}.*`, 'i')}]};
+  Posts.count(filter).then((count) => {
+    Posts.find(filter, function(err, results) {
       if (err) throw err;
-      res.render('posts/results', {keys: keys, posts: results});
+      res.render('posts/results', {count: count, keys: keys, posts: results});
+    });
   });
+
+  // Promise.all([
+  //   Posts.find(
+  //     {$or: [{subject: new RegExp(`.*${keys}.*`, 'i')},
+  //       {body: new RegExp(`.*${keys}.*`, 'i')}]}
+  //   ).count(),
+  //   Posts.find(
+  //     {$or: [{subject: new RegExp(`.*${keys}.*`, 'i')},
+  //       {body: new RegExp(`.*${keys}.*`, 'i')}]}
+  //   ).skip((page - 1) * MAX_ITEMS_PER_PAGE).toArray()
+  // ]).then((results) => {
+  //   var data = {
+  //     keys: keys,
+  //     count: results[0],
+  //     posts: results[1],
+  //     pagination: {
+  //       max: Math.ceil(results[0] / MAX_ITEMS_PER_PAGE),
+  //       current: page,
+  //       isFirst: page === 1,
+  //       isLast:  page === Math.ceil(results[0] / MAX_ITEMS_PER_PAGE)
+  //     },
+  //     query: query
+  //   };
+  //   res.render('posts/results', data);
+  // });
+  // Posts.find(
+  //   {$or: [{subject: new RegExp(`.*${keys}.*`, 'i')},
+  //     {body: new RegExp(`.*${keys}.*`, 'i')}]},
+  //   function(err, results) {
+  //     if (err) throw err;
+  //     // res.render('posts/results', {keys: keys, posts: results});
+  // });
+
 };

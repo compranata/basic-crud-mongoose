@@ -2,7 +2,7 @@ extends ../_layout
 
 block content
     div.main
-      h1 Results for ' #{keys} '
+      h1 #{count} result/s found by '#{keys}'
         -for (var i = 0; i < posts.length; i++) {
             h2: a(href="/posts/" + posts[i]._id)= posts[i].subject
             p= posts[i].body
@@ -25,5 +25,5 @@ block content
       h2(style="color: white;") Search
       form(type="post", action="/posts/search")
         -var placehld = keys.split('|').join(' ');
-        input(type="text", name="keywords", value=placehld)
+        input(type="text", name="q", value=placehld)
         input(type="submit", value="Find")
