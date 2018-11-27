@@ -25,5 +25,5 @@ block content
       h2(style="color: white;") Search
       form(type="post", action="/posts/search")
         -var placehld = keys.split('|').join(' ');
-        input(type="text", name="keywords", placeholder=placehld)
+        input(type="text", name="keywords", value=placehld)
         input(type="submit", value="Find")

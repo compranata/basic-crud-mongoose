@@ -12,4 +12,9 @@ router.get('/posts/:id/edit', post.edit);
 router.post('/posts/:id/upd', post.update);
 router.post('/posts/:id/del', post.destroy);
 
+/* 404 */
+router.get('*', function(req, res, next) {
+  res.send('Not found');
+});
+
 module.exports = router;
