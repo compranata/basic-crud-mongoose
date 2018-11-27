@@ -1,0 +1,14 @@
+doctype html
+html
+  head
+    meta(charset='utf8')
+    meta(name='viewport', content='width=device-width, initial-scale=1.0')
+    title Express App
+    //- title= configs.title
+    link(rel='stylesheet', href='/stylesheets/normalize.css')
+    link(rel='stylesheet', href='/stylesheets/style.css')
+  body
+    div.container
+      include ./_header
+      block content
+      include ./_footer

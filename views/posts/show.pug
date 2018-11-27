@@ -1,0 +1,12 @@
+extends ../_layout
+
+block content
+    div.main
+      h1 Details
+      h2= post.subject
+      p= post.body
+      p
+        a(href='/posts/' + post._id + '/edit') [Edit]
+        br
+        a(href='/posts') @ Go Back @
+    div.sidebar

@@ -1,0 +1,12 @@
+extends ../_layout
+
+block content
+    div.main
+      h1 Create a new post
+      form(method="post" action="/posts/create")
+        input(type="text" name="subject")
+        input(type="text" name="body")
+        br
+        input(type="submit" value="Save")
+      p: a(href='/posts') Go Back
+    div.sidebar
