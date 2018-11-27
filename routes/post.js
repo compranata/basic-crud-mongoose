@@ -84,8 +84,8 @@ exports.search = function (req, res) {
   let keys = (req.query.keywords).split(/\s/).join('|');
   // find() in subject or in body
   Posts.find(
-    {$or: [{subject: new RegExp(`.*${keys}.*`)},
-      {body: new RegExp(`.*${keys}.*`)}]},
+    {$or: [{subject: new RegExp(`.*${keys}.*`, 'i')},
+      {body: new RegExp(`.*${keys}.*`, 'i')}]},
     function(err, results) {
       if (err) throw err;
       res.render('posts/results', {keys: keys, posts: results});
