@@ -2,23 +2,104 @@ extends ../_layout
 
 block content
     div.main
-      h1 List of Posts
-        -for (var i = 0; i < posts.length; i++) {
-            h2: a(href="/posts/" + posts[i]._id)= posts[i].subject
-            a(href="/posts/" + posts[i]._id + "/edit") [Edit]
-            form(method="post" action="/posts/" + posts[i]._id + "/del")
-              input(type="submit", value="del")
-              input(type="hidden", name="_id", value=posts[i]._id)
-        -}
-        //- h2: a(href="/posts/" + posts.id)= posts[i].subject
-        //- a(href="/posts/" + posts.id +"/edit") [Edit]
-        //- form(method='post' action='/posts/' + posts.id + '/del')
-        //-   input(type="submit", value="del")
-        //-   //- input(type="hidden", name="_method", value="delete")
-        //-   input(type="hidden", name="id", value=posts.id)
-      p: a(href='/posts/new') @ Add New @
+      -var ttl = title || "Index";
+      h1= ttl
+      hr
+      -for (var i = 0; i < posts.length; i++) {
+        div.view(id=posts[i]._id)
+          form(method="post" action="/posts/" + posts[i]._id + "/del")
+            input.del(type="submit", value="X")
+            input(type="hidden", name="_id", value=posts[i]._id)
+          // a.button(href="/posts/" + posts[i]._id + "/edit") Edit
+          button.button(onclick="toggleEditor('" + posts[i]._id + "')") Edit
+          h3: a(href="/posts/" + posts[i]._id)= posts[i].subject
+          if posts[i].body === ""
+            p [no details...]
+          if posts[i].body !== ""
+            p= posts[i].body
+        div.edit(id= "edit-" + posts[i]._id)
+          form(method="post" action="/posts/" + posts[i]._id + "/upd")
+            button.button(onclick="toggleEditor(" + posts[i]._id + ")") Cancel
+            input.button(type="submit", value="Update" style="background-color: #00B7FF; color: #eee")
+            h3: a(href="/posts/" + posts[i]._id)= posts[i].subject
+            input(type="text" name="subject" value=posts[i].subject)
+            textarea(name="body")= posts[i].body
+            //- input(type="hidden", name="_method", value="put")
+            input(type="hidden", name="id", value=posts[i]._id)
+      -}
+
+      // pagination
+      hr
+      if paginate.hasPreviousPages || paginate.hasNextPages(pageCount)
+        ul.pagination
+          if paginate.hasPreviousPages
+            li
+              a(href=paginate.href(true))
+                span &laquo;
+          if pages
+            each page in pages
+              li(class=(currentPage === page.number) ? 'active' : '')
+                a(href=page.url)= page.number
+          if paginate.hasNextPages(pageCount)
+            li
+              a(href=paginate.href())
+                span &raquo;
+      -const key = (keys.length > 0) ? " with '" + keys.split(/\s/).join("' or '") + "'" : "";
+      if totalHit!==0 && (totalHit)
+        p (Results: #{totalHit} hits#{key}. Total #{pageCount} pages)
+      if totalHit===0 || !(totalHit)
+        p Ops! your search#{key} was not matched.
+      if ttl !== 'Index'
+        a.button(href='/posts') Back
+    
+    // sidebar
     div.sidebar
-      h2(style="color: white;") Search
-      form(type="post", action="/posts/search")
-        input(type="text", name="q", placeholder="(search text)")
-        input(type="submit", value="Find")
+      div.clearfix
+        h2 Search
+        form(type="post", action="/posts/search")
+          input(type="text", name="q", placeholder="(search text)" value=keys)
+          input.button(type="submit", value="Find")
+      div.clearfix
+        h2 Create new
+        form(method="post" action="/posts/create" onsubmit="disableSubmit(this)")
+          label(for="subject") Subject*:
+          br
+          input#newSub(type="text" name="subject" placeholder="Your Subject", required)
+          br
+          label(for="body") Body:
+          br
+          textarea(name="body" placeholder="Input your comments...")
+          br
+          input#newPost.button(type="submit" value="Save", disabled)
+    script.
+      function toggleEditor(id) {
+        var elementView = document.getElementById(id);
+        var elementEdit = document.getElementById('edit-' + id);
+        if (elementView.style.display === "none") {
+          elementView.style.display = "block";
+          elementEdit.style.display = "none";
+        } else {
+          elementView.style.display = "none";
+          elementEdit.style.display = "block";
+        }
+      }
+      function disableSubmit(form) {
+        var elements = form.elements;
+        for (var i = 0; i < elements.length; i++) {
+          if (elements[i].type == 'submit') {
+            elements[i].disabled = true;
+            }
+          }
+      }
+      window.addEventListener('DOMContentLoaded', function() {
+        var sendButton = document.getElementById('newPost');
+        sendButton.style.color = '#ccc';
+        document.getElementById('newSub').addEventListener('keyup', function() {
+          if (this.value.length < 2) {
+            sendButton.disabled = true;
+          } else {
+            sendButton.style.color = '#00B7FF';
+            sendButton.disabled = false;
+          }
+        })
+      })
