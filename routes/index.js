@@ -1,3 +1,5 @@
+// ./routes/index.js
+
 var express = require('express');
 var router = express.Router();
 var post = require('./post');
@@ -13,7 +15,9 @@ router.post('/posts/:id/del', post.destroy);
 
 /* 404 */
 router.get('*', function(req, res, next) {
-  res.send('Not found');
+  var err = new Error('Not Found');
+  err.status = 404;
+  next(err);
 });
 
 module.exports = router;
