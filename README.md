@@ -13,7 +13,5 @@ $ express --view=pug basic-crud-mongoose
 $ cd ./basic-crud-mongoose
 $ npm install
 $ npm install --save mongoose
-
-// for Paging Branch
 $ npm install --save express-paginate mongoose-paginate
 ```
