@@ -3,7 +3,6 @@
 var express = require('express');
 var router = express.Router();
 var post = require('./post');
-var paginate = require('express-paginate');
 
 /* Routing */
 router.get('/posts', post.search);

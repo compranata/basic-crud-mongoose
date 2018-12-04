@@ -3,7 +3,7 @@
 // connetion to db
 var mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost/app1');
-var model = require('./schema');
+var model = require('../models/posts');
 var Posts = model.Posts;
 var paginate = require('express-paginate');
 // var uuidv4 = require('uuid/v4');

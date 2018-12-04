@@ -1,9 +1,9 @@
-// ./routes/schema.js
+// ./routes/posts.js
 var mongoose    = require('mongoose');
 var mongoosePaginate = require('mongoose-paginate');
-var Schema      = mongoose.Schema;
+var Posts     = mongoose.Schema;
 
-var userSchema  = new Schema({
+var userSchema  = new Posts({
     subject : String,
     body    : String
 });
