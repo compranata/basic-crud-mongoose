@@ -7,25 +7,27 @@ block content
       hr
       -for (var i = 0; i < posts.length; i++) {
         div.view(id=posts[i]._id)
-          form(method="post" action="/posts/" + posts[i]._id + "/del")
-            input.del(type="submit", value="X")
-            input(type="hidden", name="_id", value=posts[i]._id)
-          // a.button(href="/posts/" + posts[i]._id + "/edit") Edit
-          button.button(onclick="toggleEditor('" + posts[i]._id + "')") Edit
+          if (user)
+            form(method="post" action="/posts/" + posts[i]._id + "/del")
+              input.del(type="submit", value="X")
+              input(type="hidden", name="_id", value=posts[i]._id)
+            // a.button(href="/posts/" + posts[i]._id + "/edit") Edit
+            button.button(onclick="toggleEditor('" + posts[i]._id + "')") Edit
           h3: a(href="/posts/" + posts[i]._id)= posts[i].subject
           if posts[i].body === ""
             p [no details...]
           if posts[i].body !== ""
             p= posts[i].body
-        div.edit(id= "edit-" + posts[i]._id)
-          form(method="post" action="/posts/" + posts[i]._id + "/upd")
-            button.button(onclick="toggleEditor(" + posts[i]._id + ")") Cancel
-            input.button(type="submit", value="Update" style="background-color: #00B7FF; color: #eee")
-            h3: a(href="/posts/" + posts[i]._id)= posts[i].subject
-            input(type="text" name="subject" value=posts[i].subject)
-            textarea(name="body")= posts[i].body
-            //- input(type="hidden", name="_method", value="put")
-            input(type="hidden", name="id", value=posts[i]._id)
+        if (user)
+          div.edit(id= "edit-" + posts[i]._id)
+            form(method="post" action="/posts/" + posts[i]._id + "/upd")
+              button.button(onclick="toggleEditor(" + posts[i]._id + ")") Cancel
+              input.button(type="submit", value="Update" style="background-color: #00B7FF; color: #eee")
+              h3: a(href="/posts/" + posts[i]._id)= posts[i].subject
+              input(type="text" name="subject" value=posts[i].subject)
+              textarea(name="body")= posts[i].body
+              //- input(type="hidden", name="_method", value="put")
+              input(type="hidden", name="id", value=posts[i]._id)
       -}
 
       // pagination
@@ -56,21 +58,29 @@ block content
     div.sidebar
       div.clearfix
         h2 Search
-        form(type="post", action="/posts/search")
+        form(method="get", action="/posts/search")
           input(type="text", name="q", placeholder="(search text)" value=keys)
           input.button(type="submit", value="Find")
-      div.clearfix
-        h2 Create new
-        form(method="post" action="/posts/create" onsubmit="disableSubmit(this)")
-          label(for="subject") Subject*:
-          br
-          input#newSub(type="text" name="subject" placeholder="Your Subject", required)
-          br
-          label(for="body") Body:
-          br
-          textarea(name="body" placeholder="Input your comments...")
-          br
-          input#newPost.button(type="submit" value="Save", disabled)
+      if (user)
+        div.clearfix
+          h2 Create new
+          form(method="post" action="/posts/create" onsubmit="disableSubmit(this)")
+            label(for="subject") Subject*:
+            br
+            input#newSub(type="text" name="subject" placeholder="Your Subject", required)
+            br
+            label(for="body") Body:
+            br
+            textarea(name="body" placeholder="Input your comments...")
+            br
+            input#newPost.button(type="submit" value="Save", disabled)
+      if (!user)
+        div.clearfix
+          h2 Let's join us!
+          a.button(href='/register') Signup
+          p when you signup this site, enabled you to update, create the posts.
+          a.button(href='/login') Login
+          p You are too lazy? Please ensure to login first.
     script.
       function toggleEditor(id) {
         var elementView = document.getElementById(id);

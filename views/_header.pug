@@ -1,6 +1,10 @@
 div.header
   ul#menu
-    li: a(href='/posts') Home
-    li: a(href='/#') Getting Started
-    li: a(href='/#') References
+    li: a(href='/') Home
+    li: a(href='/posts') Getting Started
+    li: a(href='/posts') References
     li: a(href='/#') Help
+    if (!user)
+      li: a(href='/login') Login
+    if (user)
+      li: a(href='/Logout') Logout (#{user.username})

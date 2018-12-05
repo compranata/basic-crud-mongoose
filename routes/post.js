@@ -6,6 +6,9 @@ mongoose.connect('mongodb://localhost/app1');
 var model = require('../models/posts');
 var Posts = model.Posts;
 var paginate = require('express-paginate');
+
+var passport = require('passport');
+var User = require('../models/users');
 // var uuidv4 = require('uuid/v4');
 
 // exports methods
@@ -46,6 +49,7 @@ exports.destroy = function (req, res) {
 // router.get('/posts/:id', post.search);
 // router.get('/posts/search', post.search);
 exports.search = function (req, res) {
+  // if (!req.user) res.redirect('/');
   var keys = '';
   var filter = {};
   var resultType = '';
@@ -75,7 +79,8 @@ exports.search = function (req, res) {
       posts: result.docs,
       currentPage: result.page,
       pageCount: result.pages,
-      pages: paginate.getArrayPages(req)(5, result.pages, req.query.page)
+      pages: paginate.getArrayPages(req)(5, result.pages, req.query.page),
+      user: req.user
     });
   });
 };
