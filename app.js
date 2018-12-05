@@ -10,7 +10,7 @@ var paginate = require('express-paginate');
 // var http = require('http');
 var mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
-mongoose.connect("mongodb://localhost/app1", {useMongoClient: true});
+mongoose.connect("mongodb://localhost/app1");
 var MongoStore = require('connect-mongo')(session);
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;

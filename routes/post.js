@@ -2,7 +2,7 @@
 
 // connetion to db
 var mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/app1');
+// mongoose.connect('mongodb://localhost/app1');
 var model = require('../models/posts');
 var Posts = model.Posts;
 var paginate = require('express-paginate');
@@ -33,12 +33,11 @@ exports.update = function (req, res) {
   Posts.update({_id: updated.id}, updated, function(err) {
     if (err) throw err;
   });
-  res.redirect('/posts');
+  res.redirect('/posts/' + updated.id);
 };
 
 // router.delete('/posts/:id', post.update);
 exports.destroy = function (req, res) {
-
   Posts.remove({_id: req.body._id}, function(err) {
     if (err) throw err;
   });
@@ -72,6 +71,7 @@ exports.search = function (req, res) {
 
   Posts.paginate(filter, {page: req.query.page, limit: req.query.limit}, function(err, result) {
     if (err) throw err;
+    // console.log(result);
     res.render('posts/index', {
       title: resultType,
       keys: keys,
@@ -80,7 +80,9 @@ exports.search = function (req, res) {
       currentPage: result.page,
       pageCount: result.pages,
       pages: paginate.getArrayPages(req)(5, result.pages, req.query.page),
-      user: req.user
+      user: req.user,
+      urlstr0: '?page=1&limit=' + result.limit,
+      urlstr1: '?page=' + result.pages + '&limit=' + result.limit
     });
   });
 };

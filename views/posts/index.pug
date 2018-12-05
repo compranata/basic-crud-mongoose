@@ -18,6 +18,7 @@ block content
             p [no details...]
           if posts[i].body !== ""
             p= posts[i].body
+          -console.log(posts[i].body);
         if (user)
           div.edit(id= "edit-" + posts[i]._id)
             form(method="post" action="/posts/" + posts[i]._id + "/upd")
@@ -32,25 +33,33 @@ block content
 
       // pagination
       hr
-      if paginate.hasPreviousPages || paginate.hasNextPages(pageCount)
-        ul.pagination
-          if paginate.hasPreviousPages
-            li
-              a(href=paginate.href(true))
-                span &laquo;
-          if pages
-            each page in pages
-              li(class=(currentPage === page.number) ? 'active' : '')
-                a(href=page.url)= page.number
-          if paginate.hasNextPages(pageCount)
-            li
-              a(href=paginate.href())
-                span &raquo;
+      div.pagenation.clearfix
+        if paginate.hasPreviousPages || paginate.hasNextPages(pageCount)
+          ul.pagination
+            if paginate.hasPreviousPages
+              li
+                a(href=urlstr0)
+                  span &Lt;
+              li
+                a(href=paginate.href(true))
+                  span &lt;
+            if pages
+              each page in pages
+                li(class=(currentPage === page.number) ? 'active' : '')
+                  a(href=page.url)= page.number
+            if paginate.hasNextPages(pageCount)
+              li
+                a(href=paginate.href())
+                  span &gt;
+              li
+                a(href=urlstr1)
+                  span &Gt;
       -const key = (keys.length > 0) ? " with '" + keys.split(/\s/).join("' or '") + "'" : "";
-      if totalHit!==0 && (totalHit)
-        p (Results: #{totalHit} hits#{key}. Total #{pageCount} pages)
-      if totalHit===0 || !(totalHit)
-        p Ops! your search#{key} was not matched.
+      div.small
+        if totalHit!==0 && (totalHit)
+          p (Results: #{totalHit} hits#{key}. Total #{pageCount} pages)
+        if totalHit===0
+          p Ops! your search#{key} was not matched.
       if ttl !== 'Index'
         a.button(href='/posts') Back
     
@@ -77,6 +86,7 @@ block content
       if (!user)
         div.clearfix
           h2 Let's join us!
+          p You are currently not logged in. You can only refer the list as a public reader.
           a.button(href='/register') Signup
           p when you signup this site, enabled you to update, create the posts.
           a.button(href='/login') Login

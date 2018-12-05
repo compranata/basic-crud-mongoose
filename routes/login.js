@@ -2,7 +2,7 @@
 
 // connetion to db
 var mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/app1');
+// mongoose.connect('mongodb://localhost/app1');
 var passport = require('passport');
 var User = require('../models/users');
 // var User = model.User;
@@ -10,7 +10,6 @@ var User = require('../models/users');
 
 // router.get('/', login.index);
 exports.index = function(req, res) {
-  console.log('req.user: ' + req.user);
   if (req.user) {
     res.redirect('/posts');
   } else {
@@ -28,7 +27,7 @@ exports.create = function(req, res) {
   User.register(new User({username: req.body.username}), req.body.password, function(err, user) {
     if (err) return res.render('register', {user: user});
     User.authenticate('local')(req, res, function(){
-      res.redirect('/');
+      res.redirect('/login');
     });
   });
 };
