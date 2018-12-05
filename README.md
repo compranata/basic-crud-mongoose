@@ -14,4 +14,7 @@ $ cd ./basic-crud-mongoose
 $ npm install
 $ npm install --save mongoose
 $ npm install --save express-paginate mongoose-paginate
+$ npm install --save express-session
+$ npm install --save connect-mongo
+$ npm install --save passport passport-local passport-local-mongoose
 ```

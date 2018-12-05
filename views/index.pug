@@ -1,0 +1,18 @@
+extends ./_layout
+
+block content
+  div.main
+    h1 Welcome to Basic CRUD with Mongoose
+    p This app is created to tryout the CRUD with mongoose/MongoDB. Login authentication is implemented with passport, express-session, and mongoose.
+    if (!user)
+      h3 Next Step
+      a(href='./login') Login
+      span  - Please login first, if you signed up already.
+      br
+      a(href='./register') Signup
+      span  - If you don't have an account yet, please sign up!
+    if (user)
+      h3 Hi, #{user.username}
+      a(href="/logout") Logout
+  div.sidebar
+  
