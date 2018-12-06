@@ -2,8 +2,7 @@ extends ../_layout
 
 block content
     div.main
-      -var ttl = title || "Index";
-      h1= ttl
+      h1= title
       hr
       -for (var i = 0; i < posts.length; i++) {
         div.view(id=posts[i]._id)
@@ -27,7 +26,7 @@ block content
               input(type="text" name="subject" value=posts[i].subject)
               textarea(name="body")= posts[i].body
               //- input(type="hidden", name="_method", value="put")
-              input(type="hidden", name="id", value=posts[i]._id)
+              input(type="hidden", name="_id", value=posts[i]._id)
       -}
 
       // pagination
@@ -53,7 +52,7 @@ block content
               li
                 a(href=urlstr1)
                   span &Gt;
-      -const key = (keys.length > 0) ? " with '" + keys.split(/\s/).join("' or '") + "'" : "";
+      -const key = (originalQuery.length > 0) ? " with '" + originalQuery.split(/\s/).join("' or '") + "'" : "";
       div.small
         if totalHit!==0 && (totalHit)
           p (Results: #{totalHit} hits#{key}. Total #{pageCount} pages)
@@ -67,7 +66,7 @@ block content
       div.clearfix
         h2 Search
         form(method="get", action="/posts/search")
-          input(type="text", name="q", placeholder="(search text)" value=keys)
+          input(type="text", name="q", placeholder="(search text)" value=originalQuery)
           input.button(type="submit", value="Find")
       if (user)
         div.clearfix
