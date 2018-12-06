@@ -1,15 +1,14 @@
-// ./routes/posts.js
+// ./models/posts.js
 var mongoose    = require('mongoose');
-var Posts     = mongoose.Schema;
+var Schema     = mongoose.Schema;
 var mongoosePaginate = require('mongoose-paginate');
 
-var userSchema  = new Posts({
+var userSchema  = new Schema({
     subject : String,
     body    : String
-}, {collection: 'posts'});
+});
 
+// plugin mongoose-paginate
 userSchema.plugin(mongoosePaginate);
 
-// mongoose.connect('mongodb://localhost:27017/app1');
-
-exports.Posts = mongoose.model('Posts', userSchema);
+exports.Post = mongoose.model('Post', userSchema);

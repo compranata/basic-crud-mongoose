@@ -1,36 +1,30 @@
-// ./routs/post.js
-
-// connetion to db
-var mongoose = require('mongoose');
-// mongoose.connect('mongodb://localhost/app1');
+// ./routes/posts.js
 var model = require('../models/posts');
-var Posts = model.Posts;
+// var db = require('../modules/db-crud');
+var Post = model.Post;
 var paginate = require('express-paginate');
 
-var passport = require('passport');
-var User = require('../models/users');
-// var uuidv4 = require('uuid/v4');
-
-// exports methods
+// exports methods for posts
 
 // router.post('/posts/create', post.create);
 exports.create = function (req, res) {
-  var post = new Posts();
+  var post = new Post();
   // need validation methods
   post.subject = req.body.subject;
   post.body = req.body.body;
 
+  // db.save(post);
   post.save(function(err){
     if (err) throw err;
   });
-  res.redirect('/posts');
+  res.redirect('/posts/' + post._id);
 };
 
 // router.put('/posts/:id', post.update);
 exports.update = function (req, res) {
-  var updated = new Posts();
+  var updated = new Post();
   updated = req.body;
-  Posts.update({_id: updated.id}, updated, function(err) {
+  Post.updateOne({_id: updated.id}, updated, function(err) {
     if (err) throw err;
   });
   res.redirect('/posts/' + updated.id);
@@ -38,7 +32,7 @@ exports.update = function (req, res) {
 
 // router.delete('/posts/:id', post.update);
 exports.destroy = function (req, res) {
-  Posts.remove({_id: req.body._id}, function(err) {
+  Post.remove({_id: req.body._id}, function(err) {
     if (err) throw err;
   });
   res.redirect('/posts');
@@ -69,10 +63,9 @@ exports.search = function (req, res) {
     resultType = "Details";
   }
 
-  Posts.paginate(filter, {page: req.query.page, limit: req.query.limit}, function(err, result) {
+  Post.paginate(filter, {page: req.query.page, limit: req.query.limit}, function(err, result) {
     if (err) throw err;
-    // console.log(result);
-    res.render('posts/index', {
+    res.render('posts/results', {
       title: resultType,
       keys: keys,
       totalHit: result.total,

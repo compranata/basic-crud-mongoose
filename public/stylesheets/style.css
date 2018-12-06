@@ -27,6 +27,18 @@ a {
   float: right;
 }
 
+.button-center {
+  color: #eee;
+  background-color: #00B7FF;
+  text-decoration: none;
+  margin: 10px;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  float: left;
+}
+
 .del {
   color: #00B7FF;
   text-decoration: none;

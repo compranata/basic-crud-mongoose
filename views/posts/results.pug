@@ -18,7 +18,6 @@ block content
             p [no details...]
           if posts[i].body !== ""
             p= posts[i].body
-          -console.log(posts[i].body);
         if (user)
           div.edit(id= "edit-" + posts[i]._id)
             form(method="post" action="/posts/" + posts[i]._id + "/upd")

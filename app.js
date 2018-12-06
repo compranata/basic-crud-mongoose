@@ -1,24 +1,26 @@
+// ./app.js
 var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-var session = require('express-session');
 
-// user modules
-var paginate = require('express-paginate');
-// var http = require('http');
+// modules for DB
 var mongoose = require('mongoose');
-mongoose.Promise = global.Promise;
 mongoose.connect("mongodb://localhost/app1");
-var MongoStore = require('connect-mongo')(session);
+
+// modulbes for Pagination
+var paginate = require('express-paginate');
+
+// modules for passport authentication
+var session = require('express-session');
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
+var MongoStore = require('connect-mongo')(session);
 
-
+// Routing setup files
 var indexRouter = require('./routes/index');
 // var usersRouter = require('./routes/users');
-
 
 var app = express();
 
@@ -29,13 +31,13 @@ app.set('view engine', 'pug');
 // uncomment after placing the favicon.ico
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 
-app.set('port', process.env.PROT || 3000);
-
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-// new lines
+// Pagination
+app.use(paginate.middleware(5,10));
+// Authentication
 app.use(require('express-session')({
   secret: 'keyboard cat',
   resave: false,
@@ -44,10 +46,10 @@ app.use(require('express-session')({
 }));
 app.use(passport.initialize());
 app.use(passport.session());
-// end of insert
+// public folder
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(paginate.middleware(5,10));
 
+// Routing setup
 app.use('/', indexRouter);
 // app.use('/users', usersRouter);
 
@@ -63,9 +65,6 @@ app.use(function(req, res, next) {
   };
   next();
 });
-
-//mongoose
-// mongoose.connect('mongodb://localhost/app1');
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -84,7 +83,7 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
-// // server up for production
+// // web server
 // http.createServer(app).listen(app.get('port'), function() {
 //   console.log('Express server listening on port ' + app.get('port'));
 //   mongoose.connect('mongodb://localhost/app1');

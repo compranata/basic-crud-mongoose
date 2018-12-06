@@ -2,15 +2,21 @@
 
 var express = require('express');
 var router = express.Router();
-var post = require('./post');
 var passport = require('passport');
+var register = require('./register');
 var login = require('./login');
-var User = require('../models/users');
+var post = require('./posts');
 
 /* Routing */
-router.get('/', login.index);
-router.get('/register', login.register);
-router.post('/register', login.create);
+router.get('/', function(req, res) {
+  if (req.user) {
+    res.redirect('/posts');
+  } else {
+    res.render('index', {user: req.user});
+  };
+});
+router.get('/register', register.register);
+router.post('/register', register.create);
 router.get('/login', login.login);
 router.post('/login', passport.authenticate('local'), login.auth);
 router.get('/logout', login.logout);

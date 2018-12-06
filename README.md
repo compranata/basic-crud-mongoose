@@ -6,7 +6,8 @@
 - Mongod v4.0.3
 - Mongoose v5.3.13
 
-## Install
+## Installation
+Steps to build the environment. This is not for installation of this apps.
 ```
 $ cd ./project
 $ express --view=pug basic-crud-mongoose
@@ -18,3 +19,4 @@ $ npm install --save express-session
 $ npm install --save connect-mongo
 $ npm install --save passport passport-local passport-local-mongoose
 ```
+Please find more details and its versions in package.json
