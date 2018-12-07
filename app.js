@@ -7,6 +7,7 @@ var logger = require('morgan');
 
 // modules for DB
 var mongoose = require('mongoose');
+// <<<< the options put into config for production >>>>
 mongoose.connect("mongodb://localhost/app1");
 
 // modulbes for Pagination
@@ -20,7 +21,6 @@ var MongoStore = require('connect-mongo')(session);
 
 // Routing setup files
 var indexRouter = require('./routes/index');
-// var usersRouter = require('./routes/users');
 
 var app = express();
 
@@ -42,7 +42,8 @@ app.use(require('express-session')({
   secret: 'keyboard cat',
   resave: false,
   saveUninitialized: false,
-  store: new MongoStore({mongooseConnection: mongoose.connection})
+  store: new MongoStore({mongooseConnection: mongoose.connection}),
+  cookie: {maxAge: 24 * 60 * 60 * 1000}
 }));
 app.use(passport.initialize());
 app.use(passport.session());
@@ -51,7 +52,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // Routing setup
 app.use('/', indexRouter);
-// app.use('/users', usersRouter);
 
 // passport config
 var User = require('./models/users');

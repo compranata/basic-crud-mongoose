@@ -8,6 +8,7 @@ var paginate = require('express-paginate');
 
 // router.post('/posts/create', post.create);
 exports.create = function (req, res) {
+  if (!req.user) res.redirect('/posts');
   var post = new Post();
   // need validation methods
   post.subject = req.body.subject;
@@ -18,15 +19,16 @@ exports.create = function (req, res) {
 
 // router.put('/posts/:id', post.update);
 exports.update = function (req, res) {
+  if (!req.user) res.redirect('/posts');
   var updated = new Post();
   updated = req.body;
-  console.log(req.body);
   db.update(updated);
   res.redirect('/posts/' + updated._id);
 };
 
 // router.delete('/posts/:id', post.update);
 exports.destroy = function (req, res) {
+  if (!req.user) res.redirect('/posts');
   db.destroy(req.body);
   res.redirect('/posts');
 };
@@ -36,7 +38,7 @@ exports.destroy = function (req, res) {
 // router.get('/posts/search', post.search);
 exports.search = function (req, res) {
   db.search(req.query, req.params, (response) => {
-    res.render('posts/results', {
+    res.render('posts/boards', {
       title: response.resultType,
       originalQuery: (req.query.q) ? req.query.q : '',
       totalHit: response.result.total,

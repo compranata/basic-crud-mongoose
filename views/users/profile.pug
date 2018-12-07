@@ -1,0 +1,14 @@
+extends ../_layout
+
+block content 
+  div.main
+    h1 Hey, #{user.username}
+    div.loginbox.clearfix
+      form(method="post", action="/login")
+        label Username: 
+          input(type="text", name="username", value=user.username, disabled="disabled")
+        label Password: 
+          input(type="password", name="password", value=user.password)
+        input.button(type="submit", value="Update")
+        a.button(href='/') Cancel
+  div.sidebar

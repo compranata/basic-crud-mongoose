@@ -1,0 +1,14 @@
+extends ../_layout
+
+block content 
+  div.main
+    h1 Signup
+    div.loginbox.clearfix
+      form(method="post", action="/register")
+        label Username:
+          input(type="text", name="username", placeholder='Entre Username')
+        label Password:
+          input(type="password", name="password", placeholder='Password')
+        input.button.highlight(type="submit", value="Signup")
+        a.button(href='/') Cancel
+  div.sidebar

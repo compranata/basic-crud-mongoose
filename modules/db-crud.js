@@ -39,7 +39,7 @@ db.search = (qry, parm, next) => {
     resultType: 'Index',
     result: {}
   };
-  console.log(qry);
+  
   // qry.q = "url string" with ?q=search_keywords
   if (qry.q) {
     let keyword = (qry.q).split(/\s/).join('|');

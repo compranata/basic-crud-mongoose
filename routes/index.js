@@ -5,6 +5,7 @@ var router = express.Router();
 var passport = require('passport');
 var register = require('./register');
 var login = require('./login');
+var profile = require('./users');
 var post = require('./posts');
 
 /* Routing */
@@ -20,6 +21,7 @@ router.post('/register', register.create);
 router.get('/login', login.login);
 router.post('/login', passport.authenticate('local'), login.auth);
 router.get('/logout', login.logout);
+router.get('/profile', profile.show);
 router.get('/posts', post.search);
 router.post('/posts/create', post.create);
 router.get('/posts/search', post.search);

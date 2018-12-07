@@ -20,8 +20,8 @@ block content
         if (user)
           div.edit(id= "edit-" + posts[i]._id)
             form(method="post" action="/posts/" + posts[i]._id + "/upd")
-              button.button(onclick="toggleEditor(" + posts[i]._id + ")") Cancel
-              input.button(type="submit", value="Update" style="background-color: #00B7FF; color: #eee")
+              button.button(onClick="toggleEditor('" + posts[i]._id + "'); return false;") Cancel
+              input.button.highlight(type="submit", value="Update")
               h3: a(href="/posts/" + posts[i]._id)= posts[i].subject
               input(type="text" name="subject" value=posts[i].subject)
               textarea(name="body")= posts[i].body
@@ -73,13 +73,9 @@ block content
           h2 Create new
           form(method="post" action="/posts/create" onsubmit="disableSubmit(this)")
             label(for="subject") Subject*:
-            br
-            input#newSub(type="text" name="subject" placeholder="Your Subject", required)
-            br
+              input#newSub(type="text" name="subject" placeholder="Your Subject", required)
             label(for="body") Body:
-            br
-            textarea(name="body" placeholder="Input your comments...")
-            br
+              textarea(name="body" placeholder="Input your comments...")
             input#newPost.button(type="submit" value="Save", disabled)
       if (!user)
         div.clearfix

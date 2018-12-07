@@ -1,9 +1,11 @@
-var express = require('express');
-var router = express.Router();
+// ./routes/users.js
+var passport = require('passport');
+var User = require('../models/users');
 
-/* GET users listing. */
-router.get('/', function(req, res, next) {
-  res.send('respond with a resource');
-});
 
-module.exports = router;
+// router.get('/profile', users.show);
+exports.show = function(req, res) {
+  if (!req.user) res.redirect('/');
+  console.log(req.user);
+  res.render('users/profile', {user: req.user});
+};

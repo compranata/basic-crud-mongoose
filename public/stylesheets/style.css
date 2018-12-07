@@ -16,9 +16,11 @@ a {
 }
 
 .button {
+  min-width: 60px;
   color: #00B7FF;
   background-color: #eee;
   text-decoration: none;
+  text-align: center;
   margin: 5px;
   padding: 5px;
   border: none;
@@ -27,7 +29,7 @@ a {
   float: right;
 }
 
-.button-center {
+.button-main {
   color: #eee;
   background-color: #00B7FF;
   text-decoration: none;
@@ -37,6 +39,11 @@ a {
   border-radius: 8px;
   cursor: pointer;
   float: left;
+}
+
+.highlight {
+  background-color: #00B7FF;
+  color: #eee;
 }
 
 .del {
@@ -59,19 +66,32 @@ textarea {
   resize: vertical;
 }
 
-input[type=text] {
+input[type=text], input[type=password] {
   width: 100%;
   margin: 5px 0px;
+}
+
+.loginbox {
+  max-width: 300px;
+  padding: 10px 20px;
+  border: 1px solid #eee;
+  border-radius: 5px;
+}
+
+.loginbox > input::after, a::after {
+  contens: '';
+  display: block;
+  clear: both;
 }
 
 .container {
 	background: #eee;
 	display: grid;
 	grid-template:
-	  "header"   50px
+	  "header"   auto
 	  "main"     auto
 	  "sidebar"  auto
-	  "footer"   50px
+	  "footer"   auto
 	  / 100%;
 }
 
@@ -105,7 +125,6 @@ ul#menu > li > a:hover {
 }
 
 .main {
-  min-height: 300px;
 	background: hsl(0, 0%, 100%);
 	padding: 5px 15px 15px 30px;
 	grid-area: main;
@@ -138,11 +157,14 @@ ul#menu > li > a:hover {
 @media (min-width: 570px) {
 	.container {
 	  grid-template:
-	    "header header" 50px
+	    "header header" auto
 	    "main sidebar"  auto
-	    "footer footer" 50px
+	    "footer footer" auto
 	    / 1fr 300px;
 	}
+  .main {
+    min-height: 480px;
+  }
 }
 
 /* Pagination */
