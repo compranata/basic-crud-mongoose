@@ -38,11 +38,14 @@ router.get('/login/err', function(req, res) {
   console.log(message);
   res.render('users/login', {user: req.user, message: message});
 });
-router.post('/login', passport.authenticate('local', {
-  successRedirect: '/',
-  failureMessage: true,
-  failureRedirect: '/login/err'
-}));
+router.post('/login', passport.authenticate('local'), function(req, res) {
+  res.redirect('/');
+});
+// router.post('/login', passport.authenticate('local', {
+//   successRedirect: '/',
+//   failureMessage: true,
+//   failureRedirect: '/login/err'
+// }));
 router.get('/logout', function(req, res) {
   req.logout();
   res.redirect('/');
@@ -61,6 +64,7 @@ router.get('/posts', function(req, res) {
   var mdb = new Mdb(req);
   mdb.search(req, res, (err, result) => {
     if (err) throw err;
+    console.log(req.user);
     res.render('posts/boards', result);
   });
 });

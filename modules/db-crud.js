@@ -19,7 +19,7 @@ const Mdb = function(req) {
   // this.currentPage = 0;
   this.pageCount = 0;
   this.pages = 0;
-  this.user = req.user || {};
+  this.user = req.user;
   this.urlStr0 = '';
   this.urlStrN = '';
 };
