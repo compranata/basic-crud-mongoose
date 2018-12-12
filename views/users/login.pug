@@ -4,9 +4,14 @@ block content
   div.main
     h1 Login 
     div.loginbox.clearfix
+      if (message)
+        p.warning= message
       form(method="post", action="/login")
         lable Username:
-          input(type="text", name="username", placeholder='Entre Username')
+          if (!user)
+            input(type="text", name="username", placeholder='Entre Username')
+          if (user)
+            input(type="text", name="username", value=user.username)
         label Password:
           input(type="password", name="password", placeholder='Password')
         input.button.highlight(type="submit", value="Login")

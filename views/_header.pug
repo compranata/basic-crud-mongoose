@@ -1,10 +1,11 @@
 div.header
   ul#menu
     li: a(href='/') Home
-    li: a(href='/posts') Getting Started
-    li: a(href='/posts') References
+    li: a(href='/posts') Boards
     li: a(href='/#') Help
     if (!user)
       li: a(href='/login') Login
     if (user)
-      li: a(href='/Logout') Logout (#{user.username})
+      li: a(href='/Profile') Profile(#{user.username})
+      li: a(href='/Logout') Logout
+      

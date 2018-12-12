@@ -2,13 +2,16 @@ extends ../_layout
 
 block content
     div.main
+      -var face = (title === 'Search Results') ? 'Reset' : 'Back'
+        if title !== 'Index'
+          a.button(href='/posts') #{face}
       h1= title
-      hr
+      hr 
       -for (var i = 0; i < posts.length; i++) {
         div.view(id=posts[i]._id)
           if (user)
             form(method="post" action="/posts/" + posts[i]._id + "/del")
-              input.del(type="submit", value="X")
+              input.button(type="submit", value="Del")
               input(type="hidden", name="_id", value=posts[i]._id)
             // a.button(href="/posts/" + posts[i]._id + "/edit") Edit
             button.button(onclick="toggleEditor('" + posts[i]._id + "')") Edit
@@ -16,7 +19,8 @@ block content
           if posts[i].body === ""
             p [no details...]
           if posts[i].body !== ""
-            p= posts[i].body
+            -var val = (posts[i].body).replace(/\r?\n|\r/g, '<br>')
+            p!= val
         if (user)
           div.edit(id= "edit-" + posts[i]._id)
             form(method="post" action="/posts/" + posts[i]._id + "/upd")
@@ -36,7 +40,7 @@ block content
           ul.pagination
             if paginate.hasPreviousPages
               li
-                a(href=urlstr0)
+                a(href=urlStr0)
                   span &Lt;
               li
                 a(href=paginate.href(true))
@@ -50,22 +54,22 @@ block content
                 a(href=paginate.href())
                   span &gt;
               li
-                a(href=urlstr1)
+                a(href=urlStrN)
                   span &Gt;
-      -const key = (originalQuery.length > 0) ? " with '" + originalQuery.split(/\s/).join("' or '") + "'" : "";
+      -const key = (originalQuery) ? " with '" + originalQuery.split(/\s/).join("' or '") + "'" : "";
       div.small
         if totalHit!==0 && (totalHit)
           p (Results: #{totalHit} hits#{key}. Total #{pageCount} pages)
         if totalHit===0
           p Ops! your search#{key} was not matched.
-      if ttl !== 'Index'
-        a.button(href='/posts') Back
+      if title !== 'Index'
+        a.button(href='/posts') #{face}
     
     // sidebar
     div.sidebar
       div.clearfix
         h2 Search
-        form(method="get", action="/posts/search")
+        form(method="get", action="/posts")
           input(type="text", name="q", placeholder="(search text)" value=originalQuery)
           input.button(type="submit", value="Find")
       if (user)

@@ -3,12 +3,12 @@ extends ../_layout
 block content 
   div.main
     h1 Hey, #{user.username}
+    p You can change your password here!
     div.loginbox.clearfix
-      form(method="post", action="/login")
-        label Username: 
+      form(method="post", action="/profile")
+        label your Username: 
           input(type="text", name="username", value=user.username, disabled="disabled")
-        label Password: 
-          input(type="password", name="password", value=user.password)
-        input.button(type="submit", value="Update")
+        label your Email:
+          input(type="text", name="email", value=user.email, disabled="disabled")
         a.button(href='/') Cancel
   div.sidebar

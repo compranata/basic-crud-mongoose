@@ -18,5 +18,6 @@ $ npm install --save express-paginate mongoose-paginate
 $ npm install --save express-session
 $ npm install --save connect-mongo
 $ npm install --save passport passport-local passport-local-mongoose
+$ npm install --save express-validator
 ```
 Please find more details and its versions in package.json
