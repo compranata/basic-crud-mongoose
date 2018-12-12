@@ -19,7 +19,7 @@ const Mdb = function(req) {
   // this.currentPage = 0;
   this.pageCount = 0;
   this.pages = 0;
-  this.user = req.user || {};
+  this.user = req.user;
   this.urlStr0 = '';
   this.urlStrN = '';
 };
@@ -30,7 +30,6 @@ Mdb.prototype.save = function(req, res, cb) {
   var post = new Post();
   post.subject = req.body.subject;
   post.body = req.body.body;
-  console.log(post);
   post.save((err) => {
     if (err) throw err;
     cb(null, post);
