@@ -7,18 +7,32 @@ block content
       if (error)
         p.warning= error.message
       form(method="post", action="/register")
-        if (tried)
+        if (user)
           label Username:
-            input(type="text", name="username", value=tried.username)
-        if (!tried)
+            input(type="text", name="username", value=user.username)
+            if (invalid[0].msg)
+              p.small.warning= invalid[0].msg
+          label Email Address:
+            input(type="text", name="email", value=user.email)
+            if (invalid[1].msg)
+              p.small.warning= invalid[1].msg
+          label Password:
+            input(type="password", name="password", value=user.password)
+            if (invalid[2].msg)
+              p.small.warning= invalid[2].msg
+          label Please repeat your password:
+            input(type="password", name="confirm", placeholder="Repeat your password")
+            if (invalid[3].msg && invalid[3].msg !== 'Invalid value')
+              p.small.warning= invalid[3].msg
+        if (!user)
           label Username:
             input(type="text", name="username", placeholder='Entre Username')
-        label Email Address:
-          input(type="text", name="email", placeholder='Your email address')
-        label Password:
-          input(type="password", name="password", placeholder='Password')
-        label Please repeat your password:
-          input(type="password", name="confirm", placeholder="Repeat your password")
+          label Email Address:
+            input(type="text", name="email", placeholder='Your email address')
+          label Password:
+            input(type="password", name="password", placeholder='Password')
+          label Please repeat your password:
+            input(type="password", name="confirm", placeholder="Repeat your password")
         input.button.highlight(type="submit", value="Signup")
         a.button(href='/') Cancel
   div.sidebar

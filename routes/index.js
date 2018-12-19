@@ -1,10 +1,14 @@
 // ./routes/index.js
 
 var express = require('express');
+var app = express();
+var config = require('../config')[app.get('env')];
 var router = express.Router();
 var passport = require('passport');
 var User = require('../models/users');
 var Mdb = require('../modules/db-crud');
+var auth = require('../modules/db-auth');
+const {check, body, validationResult} = require('express-validator/check');
 
 /* Routing  index */
 router.get('/', function(req, res) {
@@ -19,32 +23,49 @@ router.get('/', function(req, res) {
 router.get('/register', function(req, res) {
   res.render('users/register', {});
 });
-router.post('/register', function(req, res) {
-  User.register(new User({username: req.body.username, email: req.body.email}), req.body.password, function(err, user) {
-    if (err) return res.render('users/register', {error: err});
-    User.authenticate('local')(req.body.username, req.body.password, function(err, result){
-      if (err) throw err;
-      res.render('users/login', {user: result, message: 'Please reconfirm your password'});
-    });
-  });
+router.post('/register', [
+  check('username').isLength({min: 3}).withMessage('Username must be at least 3 characters'),
+  check('email').isEmail().withMessage('Please enter a valid email address'),
+  check('password').not().isEmpty().withMessage('Password cannot be empty'),
+  body('confirm').custom((value, {req}) => {
+    if (value !== req.body.password) {
+      throw new Error('Password confirmation does not match password');
+    }
+  })
+  // eqauls('confirm', 'password').withMessage('password does not match')
+], (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    var invalid = errors.array();
+    var indexField = ['username', 'email', 'password', 'confirm'];
+    var rtn = [{},{},{},{}];
+    for (var i = 0; i < invalid.length; i++) {
+      indexField.forEach(function(val, idx) {
+        if (invalid[i].param === val) {
+          rtn[idx] = invalid[i]
+        }
+      });
+    }
+    // return res.status(422).json({errors: errors.array()});
+    return res.render('users/register', {user: req.body, invalid: rtn});
+  }
+  // if (req.body.password !== req.body.confirm) {
+  //   return res.render('users/register', {error: {message: 'Repeated password is not matched with your password'}});
+  // }
+  auth.register(req, res);
 });
 
 /* Login-out profile */
 router.get('/login', function(req, res) {
-  res.render('users/login', {user: req.user});
+  auth.login(req, res, function(err, result) {
+    res.render('users/login', result);
+  });
 });
-router.get('/login/err', function(req, res) {
-  const message = req.session.messages[req.session.messages.length - 1];
-  res.render('users/login', {user: req.user, message: message});
-});
-router.post('/login', passport.authenticate('local'), function(req, res) {
-  res.redirect('/');
-});
-// router.post('/login', passport.authenticate('local', {
-//   successRedirect: '/',
-//   failureMessage: true,
-//   failureRedirect: '/login/err'
-// }));
+router.post('/login', passport.authenticate('local', {
+  successRedirect: '/',
+  failureMessage: true,
+  failureRedirect: '/login'
+}));
 router.get('/logout', function(req, res) {
   req.logout();
   res.redirect('/');

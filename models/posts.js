@@ -5,8 +5,11 @@ var mongoosePaginate = require('mongoose-paginate');
 
 var userSchema  = new Schema({
     subject : String,
-    body    : String
-});
+    body    : String,
+    html    : String,
+    user_id : String,
+    active  : Boolean
+}, {timestamps: true});
 
 // plugin mongoose-paginate
 userSchema.plugin(mongoosePaginate);
