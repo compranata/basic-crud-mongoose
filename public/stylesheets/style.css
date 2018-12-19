@@ -50,6 +50,13 @@ a {
   font-size: 0.8em;
 }
 
+.footnote {
+  color: #aaa;
+  font-size: 0.8em;
+  margin: 0;
+  padding: 0;
+}
+
 .warning {
   color: #ff2222;
 }
@@ -76,6 +83,11 @@ input[type=text], input[type=password] {
 
 input[type=text]:disabled {
   border: 1px solid #eee;
+}
+
+.errorField {
+  color: red;
+  background-color: #eee;
 }
 
 .loginbox {

@@ -19,8 +19,11 @@ block content
           if posts[i].body === ""
             p [no details...]
           if posts[i].body !== ""
-            -var val = (posts[i].body).replace(/\r?\n|\r/g, '<br>')
-            p!= val
+            if (title !== 'Details')
+              -var val = (posts[i].body).replace(/\r?\n|\r/g, '<br>')
+              p!= val
+            if (title === 'Details')
+              p!= posts[i].html
         if (user)
           div.edit(id= "edit-" + posts[i]._id)
             form(method="post" action="/posts/" + posts[i]._id + "/upd")
@@ -31,6 +34,11 @@ block content
               textarea(name="body")= posts[i].body
               //- input(type="hidden", name="_method", value="put")
               input(type="hidden", name="_id", value=posts[i]._id)
+              // input(type="text", name="user_id", value=user._id)
+        if (posts[i].updatedAt)
+          p.footnote Updated: #{posts[i].updatedAt}
+        if (posts[i].createdAt)
+          p.footnote Created: #{posts[i].createdAt}
       -}
 
       // pagination
@@ -75,12 +83,13 @@ block content
       if (user)
         div.clearfix
           h2 Create new
-          form(method="post" action="/posts/create" onsubmit="disableSubmit(this)")
+          form(method="post", action="/posts/create", onsubmit="disableSubmit(this)")
             label(for="subject") Subject*:
-              input#newSub(type="text" name="subject" placeholder="Your Subject", required)
+              input#newSub(type="text", name="subject", placeholder="Your Subject", required)
             label(for="body") Body:
-              textarea(name="body" placeholder="Input your comments...")
-            input#newPost.button(type="submit" value="Save", disabled)
+              textarea(name="body", placeholder="Input your comments...")
+            //- input(type="text", name="user_id", value=user._id)
+            input#newPost.button(type="submit", value="Save", disabled)
       if (!user)
         div.clearfix
           h2 Let's join us!

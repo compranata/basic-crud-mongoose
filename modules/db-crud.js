@@ -3,6 +3,9 @@
 const mongoose = require('mongoose');
 const paginate = require('express-paginate');
 // var passport = require('passport');
+const {check} = require('express-validator/check');
+
+var md = require('markdown-it')({breaks: true});
 
 const model = require('../models/posts');
 const Post = model.Post;
@@ -30,6 +33,9 @@ Mdb.prototype.save = function(req, res, cb) {
   var post = new Post();
   post.subject = req.body.subject;
   post.body = req.body.body;
+  post.html = md.render(req.body.body);
+  post.user_id = req.user._id;
+  post.active = true;
   post.save((err) => {
     if (err) throw err;
     cb(null, post);
@@ -41,6 +47,8 @@ Mdb.prototype.update = function(req, res) {
   if (!req.user) return false;
   var post = new Post();
   post = req.body;
+  post.html = md.render(req.body.body);
+  post.user_id = req.user._id;
   Post.updateOne({_id:post._id}, post, (err) => {
     if (err) throw err;
     return this;

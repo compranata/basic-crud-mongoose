@@ -19,5 +19,7 @@ $ npm install --save express-session
 $ npm install --save connect-mongo
 $ npm install --save passport passport-local passport-local-mongoose
 $ npm install --save express-validator
+$ npm install --save connect-flash
+$ npm install --save chai mocha should
 ```
 Please find more details and its versions in package.json

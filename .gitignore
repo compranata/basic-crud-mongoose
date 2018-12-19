@@ -2,5 +2,8 @@
 bin/
 node_modules/
 
+# test files
+test/
+
 # outsources
 public/stylesheets/normalize.css
