@@ -1,8 +1,6 @@
 // ./routes/users.js
-
-var passport = require('passport');
 var User = require('../models/users');
-const {check} = require('express-validator/check');
+var debug = require('debug')('register');
 
 // exports.mail = function(req, res) {
 //   var nodemailer = require('nodemailer');
@@ -24,14 +22,16 @@ exports.register = function(req, res) {
     active      : true,
     group       : 'editor'
   });
-
+  debug('newUser =  %O', newUser);
   User.register(newUser, req.body.password, function (err, user) {
     // this err is for register err, as username already exists, username is not given etc
     if (err) return res.render('users/register', {user: {username: req.body.username, email: req.body.email}, error: err});
+    debug('user = %O', user);
     User.authenticate('local')(req.body.username, req.body.password, function(err, result) {
+      debug('result = %O', result);
       // this err is for db server error etc
       if (err) throw err;
-      res.render('users/login', {user: result, message: "Please reconfirm your password"});
+      res.render('users/login', {user: result, message: 'Please reconfirm your password'});
     });
   });
 };

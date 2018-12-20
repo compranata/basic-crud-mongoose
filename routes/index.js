@@ -1,11 +1,8 @@
 // ./routes/index.js
-
 var express = require('express');
-var app = express();
-var config = require('../config')[app.get('env')];
+var debug = require('debug')('index');
 var router = express.Router();
 var passport = require('passport');
-var User = require('../models/users');
 var Mdb = require('../modules/db-crud');
 var auth = require('../modules/db-auth');
 const {check, body, validationResult} = require('express-validator/check');
@@ -16,7 +13,7 @@ router.get('/', function(req, res) {
     res.redirect('/posts');
   } else {
     res.render('index', {user: req.user});
-  };
+  }
 });
 
 /* Register */
@@ -30,9 +27,11 @@ router.post('/register', [
   body('confirm').custom((value, {req}) => {
     if (value !== req.body.password) {
       throw new Error('Password confirmation does not match password');
+    } else {
+      debug('Password = %s', value);
+      return true;
     }
   })
-  // eqauls('confirm', 'password').withMessage('password does not match')
 ], (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -42,7 +41,7 @@ router.post('/register', [
     for (var i = 0; i < invalid.length; i++) {
       indexField.forEach(function(val, idx) {
         if (invalid[i].param === val) {
-          rtn[idx] = invalid[i]
+          rtn[idx] = invalid[i];
         }
       });
     }

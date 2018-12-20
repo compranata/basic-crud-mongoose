@@ -67,17 +67,17 @@ Mdb.prototype.destroy = function(req, res) {
 // method: 'search'
 Mdb.prototype.search = function(req, res, cb) {
   if (this.originalQuery) {
-      let keyword = (this.originalQuery).split(/\s/).join('|');
-      this.query = {$or: [
-        {subject: new RegExp(`.*${keyword}.*`, 'i')},
-        {body:    new RegExp(`.*${keyword}.*`, 'i')}
-      ]};
-      this.title = 'Search Results';
-  };
+    let keyword = (this.originalQuery).split(/\s/).join('|');
+    this.query = {$or: [
+      {subject: new RegExp(`.*${keyword}.*`, 'i')},
+      {body:    new RegExp(`.*${keyword}.*`, 'i')}
+    ]};
+    this.title = 'Search Results';
+  }
   if (this.parm_id) {
     this.query = {_id: this.parm_id};
     this.title = 'Details';
-  };
+  }
 
   // send model.paginate()
   Post.paginate(this.query, {page: this.qry_page, limit: this.qry_limit}, (err, result) => {
@@ -88,7 +88,7 @@ Mdb.prototype.search = function(req, res, cb) {
     this.pageCount = result.pages;
     this.pages = paginate.getArrayPages(req)(5, result.pages, this.qry_page);
     this.urlStr0 = '?page=1&limit=' + result.limit;
-    this.urlStrN = '?page=' + result.pages + '&limit=' + result.limit
+    this.urlStrN = '?page=' + result.pages + '&limit=' + result.limit;
     cb(null, this);
   });
 };

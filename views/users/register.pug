@@ -22,6 +22,7 @@ block content
               p.small.warning= invalid[2].msg
           label Please repeat your password:
             input(type="password", name="confirm", placeholder="Repeat your password")
+            p.small.warning= invalid[3].msg
             if (invalid[3].msg && invalid[3].msg !== 'Invalid value')
               p.small.warning= invalid[3].msg
         if (!user)
