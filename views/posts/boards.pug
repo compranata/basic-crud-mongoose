@@ -69,7 +69,10 @@ block content
         if totalHit!==0 && (totalHit)
           p (Results: #{totalHit} hits#{key}. Total #{pageCount} pages)
         if totalHit===0
-          p Ops! your search#{key} was not matched.
+          if originalQuery!==''
+            p Ops! your search#{key} was not matched.
+          if orginalQuery===''
+            p There is no data uploaded yet
       if title !== 'Index'
         a.button(href='/posts') #{face}
     

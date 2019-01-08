@@ -21,5 +21,7 @@ $ npm install --save passport passport-local passport-local-mongoose
 $ npm install --save express-validator
 $ npm install --save connect-flash
 $ npm install --save chai mocha should
+$ npm install --save markdown-it
+$ npm install --save nodemailer
 ```
 Please find more details and its versions in package.json

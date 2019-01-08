@@ -1,18 +1,18 @@
 // ./models/users.js
-var mongoose    = require('mongoose');
-var Schema      = mongoose.Schema;
-var passportLocalMongoose = require('passport-local-mongoose');
+const mongoose    = require('mongoose')
+const Schema      = mongoose.Schema
+const passportLocalMongoose = require('passport-local-mongoose')
 
-var userSchema  = new Schema({
-    username  : String,
-    email     : String,
-    password  : String,
-    active    : Boolean,
-    group     : String
-}, {timestamps: true});
+const userSchema  = new Schema({
+  username  : String,
+  email     : String,
+  password  : String,
+  active    : Boolean,
+  role     : String
+}, {timestamps: true})
 
 // plugin passport-local-mongoose
-userSchema.plugin(passportLocalMongoose);
+userSchema.plugin(passportLocalMongoose)
 
 // hook pre.save
 // userSchema.pre('save', (next) => {
@@ -20,4 +20,4 @@ userSchema.plugin(passportLocalMongoose);
 //   next();
 // });
 
-module.exports = mongoose.model('User', userSchema);
+module.exports = mongoose.model('User', userSchema)
